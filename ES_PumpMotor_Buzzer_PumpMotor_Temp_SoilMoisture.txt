@@ -1,0 +1,72 @@
+//Temperature
+
+const int buzzer = 9;
+int sensorPin = 1;
+int tempPin = 0;
+int motorPin = 11;
+int soilMoisturePin = 2;
+int pumpMotor = 8;
+void setup(){
+   Serial.begin(9600);                 
+  pinMode(motorPin, OUTPUT);
+  pinMode(sensorPin,INPUT);
+  pinMode(buzzer,OUTPUT); 
+  pinMode(soilMoisturePin ,INPUT);
+
+}
+void loop()                     
+{
+     int reading = analogRead(tempPin);  
+ 
+ float voltage = reading * 5.0;
+ voltage /= 1024.0; 
+ 
+ float temperatureC = voltage* 100 ;  //converting from volts to temp
+ Serial.print("Temperature :");
+ Serial.print(temperatureC); Serial.println(" degrees C");
+ delay(3000); 
+
+//WaterLevel Sensor With Buzzer
+
+int waterLevel = analogRead(sensorPin);
+Serial.println("WaterLevel is: ");
+Serial.println(waterLevel);
+delay(4000);
+  if(waterLevel<300){
+  Serial.println("Water tank is empty");
+  tone(buzzer, 1000);
+  delay(1000);        
+  noTone(buzzer);     
+  delay(1000);        
+  }
+   else if(waterLevel<615){
+    Serial.println("Water tank is 1/2 empty");    
+  }
+  else if(waterLevel<640){
+    Serial.println("Water tank is full");    
+  }
+
+//SoilMoisture 
+
+  int moistureReading = analogRead(soilMoisturePin);
+  Serial.print("MoistureLevel : ");
+  Serial.println(moistureReading); 
+  delay(2000);
+  if(moistureReading > 600){
+    digitalWrite(pumpMotor,HIGH);
+    Serial.println("SOIL IS DRY");
+    Serial.println("PUMP MOTOR IS ON");
+  }
+   else if(moistureReading > 350){
+    digitalWrite(pumpMotor,LOW);
+    Serial.println("SOIL IS WET");
+    Serial.println("PUMP MOTOR IS OFF");
+  }
+  else if(moistureReading > 200){
+    digitalWrite(pumpMotor,LOW);
+    Serial.println("SOIL IS FULLY WATERED");
+  }
+
+
+ 
+}
