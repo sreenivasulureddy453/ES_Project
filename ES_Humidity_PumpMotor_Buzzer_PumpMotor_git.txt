@@ -1,5 +1,6 @@
 //DHT11 Humidity Sensor
-
+//Download dht library first
+//tools->managelibraries->dht->install
 #include <DHT.h>          // Including library for dht
 #define DHTPIN 0          //pin where the dht11 is connected
 
